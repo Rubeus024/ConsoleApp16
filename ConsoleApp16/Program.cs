@@ -12,11 +12,11 @@ namespace ConsoleApp16
         public static Board gameBoard = new Board(30, 30);   // Board Settings
         public static string keyboardInput;
         public static Cell[,] allCells = GenerateCells();
-        internal static int populationCounter = 0;
+        public static int populationCounter = 0;
 
         static void Main(string[] args)
         {
-
+            Invect();
             while (gameFlag)
             {
                 Draw(allCells);
@@ -33,6 +33,16 @@ namespace ConsoleApp16
                     gameFlag = false;
                 }
             }
+        }
+
+        private static void Invect()
+        {
+            Random gen = new Random();
+            int x = gen.Next(0, gameBoard.Height - 1);
+            int y = gen.Next(0, gameBoard.Width - 1);
+            allCells[x, y].IsInvected = true;
+
+
         }
 
         public static void Update(Cell[,] allCells)
@@ -267,7 +277,6 @@ namespace ConsoleApp16
             {
                 cell.IsAlive = false;
             }
-            ChangePolulation(cell.IsAlive);
 
 
         }
@@ -287,11 +296,6 @@ namespace ConsoleApp16
                 }
             }
             return populationCounter;
-        }
-
-        private static int ChangePolulation(bool x)
-        {
-            return x == true ? populationCounter++ : populationCounter--;
         }
     }
 }
