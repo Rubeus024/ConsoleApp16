@@ -11,7 +11,8 @@ namespace ConsoleApp16
         public static Random generator = new Random();
         public int xCoordinate { get; private set; }
         public int yCoordinate { get; private set; }
-        public bool IsAlive { get; private set; }
+        public bool IsAlive { get; set; }
+        public bool IsInvected { get; set; } = false;
 
         public Cell(int xcoordinate,int ycoordinate)
         {
@@ -22,9 +23,17 @@ namespace ConsoleApp16
 
         private bool ToRevive()
         {
-            int isAlive = generator.Next(0, 2);
-            //Console.WriteLine(isAlive);
-            return isAlive==1 ? true : false;
+            //Initial population density
+            int isAlive = generator.Next(0, 7);
+            if (isAlive == 1)
+            {
+                Program.populationCounter = 1;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

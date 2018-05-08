@@ -9,25 +9,26 @@ namespace ConsoleApp16
     class Program
     {
         public static bool gameFlag = true;
-        public static Board gameBoard = new Board(20, 10);
+        public static Board gameBoard = new Board(30, 30);   // Board Settings
         public static string keyboardInput;
         public static Cell[,] allCells = GenerateCells();
+        internal static int populationCounter = 0;
 
         static void Main(string[] args)
         {
-            //Cell[,] allCells = GenerateCells();
 
             while (gameFlag)
             {
                 Draw(allCells);
-                Update(allCells);
-
+                Console.WriteLine(CountPopulation());
                 Console.WriteLine("Do you want a next iteration?");
                 keyboardInput = Console.ReadLine();
                 Console.Clear();
+                Update(allCells);
 
 
-                if(keyboardInput == "n")
+
+                if (keyboardInput == "n")
                 {
                     gameFlag = false;
                 }
@@ -42,16 +43,150 @@ namespace ConsoleApp16
                 {
                     CheckCellNeighbourhood(i,j,allCells[i,j]);
                 }
-                //Console.WriteLine();
             }
 
         }
 
         private static void CheckCellNeighbourhood(int i, int j, Cell cell)
         {
-            if(i==0 && j==0)
+
+            int counter = 0;
+            //Upper left corner
+            if (i == 0 && j == 0)
             {
-                //allCells
+                if (allCells[i, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+            }
+            //Upper boundary
+            else if (i == 0 && j < gameBoard.Width - 1)
+            {
+                if (allCells[i, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j + 1].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+
+            }
+
+            //Upper right corner
+            else if (i == 0 && j == gameBoard.Width - 1)
+            {
+                if (allCells[i, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+            }
+
+            //Left boundary
+            else if (i < gameBoard.Height - 1 && j == 0)
+            {
+                if (allCells[i - 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+
+            }
+
+            //Right boundary
+            else if (i < gameBoard.Height - 1 && j == gameBoard.Width - 1)
+            {
+                if (allCells[i - 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+
+            }
+
+            //Lower left corner
+            else if (i == gameBoard.Height - 1 && j == 0)
+            {
+                if (allCells[i - 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i, j + 1].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+            }
+
+            //Lower boundary
+            else if (i == gameBoard.Height - 1 && j < gameBoard.Width - 1)
+            {
+                if (allCells[i, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i, j + 1].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+
+            }
+
+            //Lower right corner
+            else if (i == gameBoard.Height - 1 && j == gameBoard.Width - 1)
+            {
+                if (allCells[i - 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i, j - 1].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+            }
+
+            //Center
+            else
+            {
+                if (allCells[i - 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i - 1, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i, j + 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j - 1].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j].IsAlive)
+                { counter++; }
+                if (allCells[i + 1, j + 1].IsAlive)
+                { counter++; }
+                isAlive(counter, cell);
+
             }
         }
 
@@ -64,11 +199,11 @@ namespace ConsoleApp16
 
                     if (allCells[i, j].IsAlive)
                     {
-                        Console.Write(" * ");
+                        Console.Write("X");
                     }
                     else
                     {
-                        Console.Write("   ");
+                        Console.Write("-");
                     }
                 }
                 Console.WriteLine();
@@ -112,6 +247,51 @@ namespace ConsoleApp16
                     Console.WriteLine("Is alive?? " + allCells[x, y].IsAlive + " Coordinates  x: " + allCells[x, y].xCoordinate + " y: " + allCells[x, y].yCoordinate);
                 }
             }
+        }
+
+        public static void isAlive(int counter, Cell cell)
+        {
+            if((counter == 2 || counter == 3) && cell.IsAlive==true )
+            {
+                cell.IsAlive = true;
+            }
+            else
+            {
+                cell.IsAlive = false;
+            }
+            if(counter==3 && cell.IsAlive==false)
+            {
+                cell.IsAlive = true;
+            }
+            if(counter!=3 && cell.IsAlive == false)
+            {
+                cell.IsAlive = false;
+            }
+            ChangePolulation(cell.IsAlive);
+
+
+        }
+
+        private static int CountPopulation()
+        {
+            populationCounter = 0;
+            for (int i = 0; i < gameBoard.Height; i++)
+            {
+                for (int j = 0; j < gameBoard.Width; j++)
+                {
+
+                    if (allCells[i, j].IsAlive)
+                    {
+                        populationCounter++;
+                    }
+                }
+            }
+            return populationCounter;
+        }
+
+        private static int ChangePolulation(bool x)
+        {
+            return x == true ? populationCounter++ : populationCounter--;
         }
     }
 }
